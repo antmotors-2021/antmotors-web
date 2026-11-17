@@ -416,6 +416,19 @@ footer .wrap{padding-block:48px 28px}
 .wa-float svg{width:26px;height:26px}
 .wa-float:hover{background:#178a45}
 @media (max-width:560px){.wa-float span{display:none}.wa-float{padding:15px}}
+/* Aviso de cookies */
+.cookies{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:80;max-width:720px;margin-inline:auto;background:var(--cal);color:var(--tinta);border-top:4px solid var(--rojo);border-radius:6px;box-shadow:0 18px 50px rgba(0,0,0,.5);padding:18px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px}
+.cookies[hidden]{display:none!important}
+.cookies p{margin:0;flex:1 1 320px;font-size:.95rem;line-height:1.5}
+.cookies a{color:var(--rojo-osc);font-weight:600}
+.cookies .acciones{display:flex;gap:10px;flex-wrap:wrap}
+.cookies button{font-family:var(--f-display);font-weight:800;font-size:1.05rem;letter-spacing:.04em;text-transform:uppercase;padding:11px 18px;border-radius:4px;border:2px solid var(--tinta);background:transparent;color:var(--tinta);cursor:pointer;line-height:1}
+.cookies button.si{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.cookies button.si:hover{background:var(--rojo-osc);border-color:var(--rojo-osc)}
+body.con-aviso .wa-float{bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+@media (max-width:560px){body.con-aviso .wa-float{bottom:calc(210px + env(safe-area-inset-bottom,0px))}}
+.legal .links{display:flex;gap:18px;flex-wrap:wrap}
+.legal button.lnk{background:none;border:0;padding:0;color:inherit;font:inherit;text-decoration:underline;cursor:pointer}
 </style>
 </head>
 <body>
@@ -893,7 +906,7 @@ footer .wrap{padding-block:48px 28px}
     </div>
     <div class="legal">
       <span>© <span id="y">2026</span> ANT MOTORS S.A.S. · NIT 901500712-1. Taller independiente especializado. Volkswagen y Audi son marcas registradas de sus respectivos propietarios.</span>
-      <a href="politica-de-datos.html">Política de tratamiento de datos</a>
+      <span class="links"><a href="politica-de-datos.html">Política de tratamiento de datos</a><button class="lnk" type="button" id="cookies-pref">Preferencias de cookies</button></span>
     </div>
   </div>
 </footer>
@@ -975,6 +988,76 @@ footer .wrap{padding-block:48px 28px}
   document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !vm.hidden) cerrarVideo(); });
 
   document.getElementById("y").textContent = new Date().getFullYear();
+})();
+</script>
+
+<!-- AVISO DE COOKIES: las herramientas de medición solo se cargan si la persona acepta -->
+<div class="cookies" id="cookies" hidden role="region" aria-label="Aviso de cookies">
+  <p>Usamos cookies de Google Analytics y Meta para contar visitas y mejorar nuestros anuncios. Puedes aceptarlas o rechazarlas. Más detalles en nuestra <a href="politica-de-datos.html#cookies">política de datos</a>.</p>
+  <div class="acciones">
+    <button type="button" class="no" id="cookies-no">Rechazar</button>
+    <button type="button" class="si" id="cookies-si">Aceptar</button>
+  </div>
+</div>
+
+<script>
+/* ===== MEDICIÓN: Google Analytics + píxel de Meta (+ TikTok cuando esté listo) =====
+   Para agregar TikTok: pega su ID entre las comillas de "tiktok". */
+(function(){
+  var IDS = {
+    ga: "G-L6H68HWKVC",
+    meta: "1347288057521613",
+    tiktok: ""
+  };
+  var CLAVE = "am_cookies";
+  var cargado = false;
+
+  function leer(){ try { return localStorage.getItem(CLAVE); } catch(e){ return null; } }
+  function guardar(v){ try { localStorage.setItem(CLAVE, v); } catch(e){} }
+
+  function cargar(){
+    if (cargado) return; cargado = true;
+    if (IDS.ga) {
+      var g = document.createElement("script"); g.async = true;
+      g.src = "https://www.googletagmanager.com/gtag/js?id=" + IDS.ga;
+      document.head.appendChild(g);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ dataLayer.push(arguments); };
+      gtag("js", new Date());
+      gtag("config", IDS.ga);
+    }
+    if (IDS.meta) {
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq("init", IDS.meta);
+      fbq("track", "PageView");
+    }
+    if (IDS.tiktok) {
+      !function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=d.createElement("script");o.type="text/javascript",o.async=!0,o.src=r+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};ttq.load(IDS.tiktok);ttq.page();}(window,document,"ttq");
+    }
+  }
+
+  /* Cada clic en un botón de WhatsApp cuenta como "contacto" */
+  document.addEventListener("click", function(e){
+    var a = e.target.closest && e.target.closest(".js-wa");
+    if (!a || !cargado) return;
+    var donde = a.classList.contains("wa-float") ? "boton_flotante" : (a.closest("section") && a.closest("section").id) || (a.closest("header") ? "menu" : "pagina");
+    if (window.gtag) gtag("event", "generate_lead", { method: "whatsapp", ubicacion: donde });
+    if (window.fbq) fbq("track", "Contact", { content_name: "WhatsApp " + donde });
+    if (window.ttq) ttq.track("Contact", { content_name: "WhatsApp " + donde });
+  });
+
+  var aviso = document.getElementById("cookies");
+  function mostrar(){ aviso.hidden = false; document.body.classList.add("con-aviso"); }
+  function ocultar(){ aviso.hidden = true; document.body.classList.remove("con-aviso"); }
+  document.getElementById("cookies-si").addEventListener("click", function(){ guardar("si"); ocultar(); cargar(); });
+  document.getElementById("cookies-no").addEventListener("click", function(){
+    var antes = leer(); guardar("no"); ocultar();
+    if (antes === "si" && cargado) location.reload();
+  });
+  document.getElementById("cookies-pref").addEventListener("click", mostrar);
+
+  var v = leer();
+  if (v === "si") cargar(); else if (v !== "no") mostrar();
 })();
 </script>
 
